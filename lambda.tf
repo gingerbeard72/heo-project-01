@@ -1,7 +1,7 @@
 
 
-# __generated__ by Terraform from "cartographer-health-monitoring-lambda"
-resource "aws_lambda_function" "cartographer-health-monitoring-lambda" {
+# __generated__ by Terraform from "health-monitoring-lambda"
+resource "aws_lambda_function" "health-monitoring-lambda" {
   architectures = ["x86_64"]
   function_name = var.health_monitor_lambda
   #image_uri                      = "${data.aws_caller_identity.current.account_id}.${var.health_monitor_lambda_uri}"
@@ -18,7 +18,7 @@ resource "aws_lambda_function" "cartographer-health-monitoring-lambda" {
   }
   logging_config {
     log_format = "Text"
-    log_group  = aws_cloudwatch_log_group.cartographer-health-monitor.name
+    log_group  = aws_cloudwatch_log_group.health-monitor.name
   }
   tracing_config {
     mode = "PassThrough"
@@ -35,14 +35,14 @@ resource "aws_lambda_function" "cartographer-health-monitoring-lambda" {
 
 
 ## Okapi Lambda
-resource "aws_lambda_function" "cartographer-okapi-etl-lambda" {
+resource "aws_lambda_function" "-lambda" {
   architectures                  = ["x86_64"]
-  function_name                  = var.cartographer-okapi-etl-lambda
-  image_uri                      = data.aws_ecr_image.okapi_etl_lambda.image_uri
+  function_name                  = var.-lambda
+  image_uri                      = data.aws_ecr_image._lambda.image_uri
   memory_size                    = 256
   package_type                   = "Image"
   reserved_concurrent_executions = -1
-  role                           = aws_iam_role.okapi-etl-lambda-role.arn
+  role                           = aws_iam_role.-lambda-role.arn
   skip_destroy                   = false
   tags                           = var.resource_tags
   timeout                        = 900
@@ -51,7 +51,7 @@ resource "aws_lambda_function" "cartographer-okapi-etl-lambda" {
   }
   logging_config {
     log_format = "Text"
-    log_group  = aws_cloudwatch_log_group.okapi-etl-lambda.name
+    log_group  = aws_cloudwatch_log_group.-lambda.name
   }
   tracing_config {
     mode = "PassThrough"
@@ -65,16 +65,16 @@ resource "aws_lambda_function" "cartographer-okapi-etl-lambda" {
   }
 }
 
-# __generated__ by Terraform from "cartographer-external-ephemeris-etl-lambda"
-resource "aws_lambda_function" "cartographer-external-ephemeris-etl-lambda" {
+# __generated__ by Terraform from "external-ephemeris-etl-lambda"
+resource "aws_lambda_function" "external-ephemeris-etl-lambda" {
   provider                       = aws.prod
   architectures                  = ["x86_64"]
-  function_name                  = "cartographer-external-ephemeris-etl-lambda"
-  image_uri                      = "${data.aws_caller_identity.current.account_id}.dkr.ecr.ap-southeast-2.amazonaws.com/cartographer_external_ephemeris_etl_lambda_r:latest"
+  function_name                  = "external-ephemeris-etl-lambda"
+  image_uri                      = "${data.aws_caller_identity.current.account_id}.dkr.ecr.ap-southeast-2.amazonaws.com/external_ephemeris_etl_lambda_r:latest"
   memory_size                    = 512
   package_type                   = "Image"
   reserved_concurrent_executions = -1
-  role                           = aws_iam_role.cartographer-external-ephemeris-etl-lambda-role.arn
+  role                           = aws_iam_role.external-ephemeris-etl-lambda-role.arn
   skip_destroy                   = false
   tags                           = var.resource_tags
   timeout                        = 15
@@ -83,7 +83,7 @@ resource "aws_lambda_function" "cartographer-external-ephemeris-etl-lambda" {
   }
   logging_config {
     log_format = "Text"
-    log_group  = "/aws/lambda/cartographer-external-ephemeris-etl-lambda"
+    log_group  = "/aws/lambda/external-ephemeris-etl-lambda"
   }
   tracing_config {
     mode = "PassThrough"
@@ -97,16 +97,16 @@ resource "aws_lambda_function" "cartographer-external-ephemeris-etl-lambda" {
   }
 }
 
-# __generated__ by Terraform from "cartographer-spacetrack-etl-lambda"
-resource "aws_lambda_function" "cartographer-spacetrack-etl-lambda" {
+# __generated__ by Terraform from "etl-lambda"
+resource "aws_lambda_function" "etl-lambda" {
   provider                       = aws.prod
   architectures                  = ["x86_64"]
-  function_name                  = "cartographer-spacetrack-etl-lambda"
-  image_uri                      = "048955030943.dkr.ecr.ap-southeast-2.amazonaws.com/cartographer_spacetrack_etl_lambda_r:latest"
+  function_name                  = "etl-lambda"
+  image_uri                      = ".dkr.ecr.ap-southeast-2.amazonaws.com/etl_lambda_r:latest"
   memory_size                    = 8196
   package_type                   = "Image"
   reserved_concurrent_executions = -1
-  role                           = "arn:aws:iam::048955030943:role/service-role/cartographer-spacetrack-etl-lambda-role-riu0y136"
+  role                           = "arn:aws:iam:::role/service-role/etl-lambda-role-"
   skip_destroy                   = false
   tags                           = var.resource_tags
   timeout                        = 900
@@ -115,7 +115,7 @@ resource "aws_lambda_function" "cartographer-spacetrack-etl-lambda" {
   }
   logging_config {
     log_format = "Text"
-    log_group  = "/aws/lambda/cartographer-spacetrack-etl-lambda"
+    log_group  = "/aws/lambda/etl-lambda"
   }
   tracing_config {
     mode = "PassThrough"
