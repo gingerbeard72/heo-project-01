@@ -1,0 +1,6 @@
+{
+  "ecs_cartographer": {
+    "ecs_cluster": "heo-inspect-cluster", 
+    "ecs_service": "cartographer" 
+  } 
+}
