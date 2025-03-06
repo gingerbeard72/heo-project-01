@@ -1,15 +1,11 @@
 terraform {
   backend "http" {
-    address        = "https://gitlab.com/api/v4/projects/54874206/terraform/state/prod"
-    lock_address   = "https://gitlab.com/api/v4/projects/54874206/terraform/state/prod/lock"
-    unlock_address = "https://gitlab.com/api/v4/projects/54874206/terraform/state/prod/lock"
+    address        = ""
+    lock_address   = ""
+    unlock_address = ""
   }
 
-  # backend "local" {
-  #   path = "terraform.tfstate"
-  # }
-
-  required_providers {
+    required_providers {
     aws = {
       source  = "hashicorp/aws"
       version = "~> 5.55.0"
@@ -18,7 +14,7 @@ terraform {
 }
 
 provider "aws" {
-  alias   = "prod"
-  region  = "ap-southeast-2"
-  profile = "prod"
+  alias   = ""
+  region  = ""
+  profile = ""
 }
