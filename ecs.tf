@@ -1,8 +1,8 @@
 resource "aws_ecs_task_definition" "ecs_task_definition_app" {
   depends_on               = [aws_instance.instance]
   family                   = "${var.container_name}-app"
-  task_role_arn            = aws_iam_role.cartographer-taskexecution-role.arn
-  execution_role_arn       = aws_iam_role.cartographer-ecs-web-role.arn
+  task_role_arn            = aws_iam_role.taskexecution-role.arn
+  execution_role_arn       = aws_iam_role.ecs-web-role.arn
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   cpu                      = "8192"
@@ -15,22 +15,22 @@ resource "aws_ecs_task_definition" "ecs_task_definition_app" {
       essential = true
       environment = [
         {
-          name  = "CARTOGRAPHER_DB_USERNAME",
-          value = "${local.json_data.cartographer_db_username}"
+          name  = "DB_USERNAME",
+          value = "${local.json_data.db_username}"
         },
         {
-          name  = "CARTOGRAPHER_DB_HOST",
-          value = "${local.json_data.cartographer_db_host}"
+          name  = "DB_HOST",
+          value = "${local.json_data.db_host}"
         },
         {
-          name  = "CARTOGRAPHER_DB_PORT",
-          value = "${local.json_data.cartographer_db_port}"
+          name  = "DB_PORT",
+          value = "${local.json_data.db_port}"
         },
       ]
       secrets = [
         {
-          "name" : "CARTOGRAPHER_DB_PASSWORD",
-          "valueFrom" : "${data.aws_secretsmanager_secret_version.secret_version.arn}:CARTOGRAPHER_DB_PASSWORD::"
+          "name" : "DB_PASSWORD",
+          "valueFrom" : "${data.aws_secretsmanager_secret_version.secret_version.arn}:DB_PASSWORD::"
         }
       ]
 
@@ -43,7 +43,7 @@ resource "aws_ecs_task_definition" "ecs_task_definition_app" {
         {
           containerPort = 4305
           hostPort      = 4305
-          name          = "cartographer-app"
+          name          = "app"
           protocol      = "tcp"
         }
       ]
@@ -51,7 +51,7 @@ resource "aws_ecs_task_definition" "ecs_task_definition_app" {
       systemControls = []
       volumesFrom    = []
       network_configuration = {
-        hostname = "cartographer-app"
+        hostname = "app"
       }
       logConfiguration = {
         logDriver = "awslogs"
@@ -66,7 +66,7 @@ resource "aws_ecs_task_definition" "ecs_task_definition_app" {
 }
 
 resource "aws_ecs_service" "ecs_service_app" {
-  cluster                 = data.aws_ecs_cluster.heo-inspect-cluster.arn
+  cluster                 = data.aws_ecs_cluster.cluster.arn
   depends_on              = [aws_ecs_task_definition.ecs_task_definition_app]
   desired_count           = 1
   enable_ecs_managed_tags = true
