@@ -2,93 +2,93 @@ data "aws_region" "current" {}
 
 data "aws_caller_identity" "current" {}
 
-data "aws_iam_role" "heo_web_role" {
-  name     = "heo-web-role"
+data "aws_iam_role" "role" {
+  name     = "role"
   provider = aws.prod
 }
 
-data "aws_iam_role" "ecs_task_execution_role" {
-  name = "ecsTaskExecutionRole"
+data "aws_iam_role" "task_execution_role" {
+  name = "TaskExecutionRole"
 }
 
-data "aws_iam_role" "ecsEventsRole" {
-  name = "ecsEventsRole"
+data "aws_iam_role" "EventsRole" {
+  name = "EventsRole"
 }
 
 data "aws_security_group" "sec-group" {
-  id       = "sg-0ceb4a4bb00e213a6"
+  id       = "sg-"
   provider = aws.prod
 }
 
 data "aws_subnet" "compute-private-subnet-1" {
-  id       = "subnet-0c421eb89c3eb1c71"
+  id       = "subnet-"
   provider = aws.prod
 }
 
 data "aws_subnet" "compute-private-subnet-2" {
-  id       = "subnet-062218afb039e4d35"
+  id       = "subnet-"
   provider = aws.prod
 }
 
 data "aws_subnet" "compute-private-subnet-3" {
-  id       = "subnet-08711ee027f09507b"
+  id       = "subnet-"
   provider = aws.prod
 }
 
 data "aws_subnet" "lambda-private-subnet-1" {
-  id       = "subnet-0619e325ea6a3212f"
+  id       = "subnet-"
   provider = aws.prod
 }
 
 data "aws_subnet" "lambda-private-subnet-2" {
-  id       = "subnet-0db9f1772eed142de"
+  id       = "subnet-"
   provider = aws.prod
 }
 
 data "aws_subnet" "lambda-private-subnet-3" {
-  id       = "subnet-004889b194e85eee7"
+  id       = "subnet-"
   provider = aws.prod
 }
 
-data "aws_vpc" "heo-prod-vpc" {
-  id       = "vpc-024f12733fb90d59c"
+data "aws_vpc" "-prod-vpc" {
+  id       = "vpc-"
   provider = aws.prod
 }
 
-data "aws_ecs_cluster" "heo-inspect-cluster" {
-  cluster_name = "heo-inspect-cluster"
+data "aws_ecs_cluster" "cluster" {
+  cluster_name = "cluster"
   provider     = aws.prod
 }
 
 data "aws_sns_topic" "sns_topic" {
-  name     = "heo-prod-infra-alerts"
+  name     = "infra-alerts"
   provider = aws.prod
 }
 
-data "aws_ssm_parameter" "cartographer" {
-  name     = "heo-cartographer-config"
+data "aws_ssm_parameter" "parameter" {
+  name     = "-config"
   provider = aws.prod
 }
 
-data "aws_key_pair" "cartographer-db" {
-  key_name = "cartographer-db"
+data "aws_key_pair" "-db" {
+  key_name = "-db"
   provider = aws.prod
 }
 
-data "aws_ecr_image" "cartographer_r" {
-  repository_name = "cartographer_r"
+data "aws_ecr_image" "_r" {
+  repository_name = "_r"
   image_tag       = "latest"
   provider        = aws.prod
 }
 
-data "aws_ecr_image" "okapi_etl_lambda" {
-  repository_name = "cartographer_okapi_etl_lambda_r"
+data "aws_ecr_image" "_etl_lambda" {
+  repository_name = "__etl_lambda_r"
   image_tag       = "latest"
   provider        = aws.prod
 }
 
 data "aws_ecr_image" "health_monitoring" {
-  repository_name = "cartographer_health_monitoring_lambda_r"
+  repository_name = "_health_monitoring_lambda_r"
   image_tag       = "latest"
   provider        = aws.prod
 }
@@ -99,13 +99,13 @@ data "aws_ecr_image" "devops" {
   provider        = aws.prod
 }
 
-data "aws_secretsmanager_secret" "cartographer_db_secret" {
-  name     = "cartographer/db"
+data "aws_secretsmanager_secret" "_db_secret" {
+  name     = "/db"
   provider = aws.prod
 }
 
 data "aws_secretsmanager_secret_version" "secret_version" {
-  secret_id = data.aws_secretsmanager_secret.cartographer_db_secret.id
+  secret_id = data.aws_secretsmanager_secret._db_secret.id
   provider  = aws.prod
 }
 
@@ -119,7 +119,7 @@ data "aws_iam_policy_document" "scheduler" {
   }
 }
 
-data "aws_iam_policy_document" "ecs_task_permissions" {
+data "aws_iam_policy_document" "k_permissions" {
   statement {
     actions = [
       "ecs:ListTasks",
@@ -130,9 +130,9 @@ data "aws_iam_policy_document" "ecs_task_permissions" {
     ]
     effect = "Allow"
     resources = [
-      "arn:aws:route53:::hostedzone/Z01042851YOY0GTT8KZ17",
-      "arn:aws:ecs:ap-southeast-2:048955030943:container-instance/heo-inspect-cluster/*",
-      "arn:aws:ecs:ap-southeast-2:048955030943:task/heo-inspect-cluster/*"
+      "arn:aws:route53:::hostedzone/",
+      "arn:aws:ecs:ap-southeast-2::container-instance/cluster/*",
+      "arn:aws:ecs:ap-southeast-2::task/cluster/*"
     ]
   }
 }
@@ -144,14 +144,14 @@ data "aws_iam_policy_document" "health_monitor_policy" {
       "ssm:GetParameter"
     ]
     resources = [
-      "${aws_cloudwatch_log_group.cartographer-health-monitor.arn}",
-      "${aws_ssm_parameter.cartographer-cartographer_health_monitoring_lambda.arn}"
+      "${aws_cloudwatch_log_group.-health-monitor.arn}",
+      "${aws_ssm_parameter.-_health_monitoring_lambda.arn}"
     ]
     effect = "Allow"
   }
 }
 
-data "aws_iam_policy_document" "cartographer_secrets" {
+data "aws_iam_policy_document" "_secrets" {
   statement {
     actions = [
       "secretsmanager:GetSecretValue",
@@ -160,7 +160,7 @@ data "aws_iam_policy_document" "cartographer_secrets" {
     ]
     effect = "Allow"
     resources = [
-      "arn:aws:secretsmanager:ap-southeast-2:048955030943:secret:cartographer/db-RTcy0m"
+      "arn:aws:secretsmanager:ap-southeast-2::secret:/db-RTcy0m"
     ]
   }
   statement {
@@ -175,12 +175,12 @@ data "aws_iam_policy_document" "cartographer_secrets" {
   }
 }
 
-data "aws_lambda_function" "cartographer-spacetrack-etl-lambda" {
-  function_name = "cartographer-spacetrack-etl-lambda"
+data "aws_lambda_function" "-spacetrack-etl-lambda" {
+  function_name = "-spacetrack-etl-lambda"
   provider      = aws.prod
 }
 
-data "aws_iam_policy_document" "cartographer-external-ephemeris-etl-lambda" {
+data "aws_iam_policy_document" "-external-ephemeris-etl-lambda" {
   statement {
     actions = [
       "logs:PutLogEvents",
@@ -188,8 +188,8 @@ data "aws_iam_policy_document" "cartographer-external-ephemeris-etl-lambda" {
     ]
     effect = "Allow"
     resources = [
-      aws_cloudwatch_log_group.cartographer-external-ephemeris-etl-lambda.arn,
-      aws_ssm_parameter.cartographer-external-ephemeris-etl-lambda-config.arn
+      aws_cloudwatch_log_group.-external-ephemeris-etl-lambda.arn,
+      aws_ssm_parameter.-external-ephemeris-etl-lambda-config.arn
     ]
   }
   statement {
@@ -200,7 +200,7 @@ data "aws_iam_policy_document" "cartographer-external-ephemeris-etl-lambda" {
     ]
     resources = [
       "arn:aws:logs:ap-southeast-2:${data.aws_caller_identity.current.account_id}:*",
-      "arn:aws:s3:::heo-cartographer-00"
+      "arn:aws:s3:::--00"
     ]
   }
   statement {
@@ -209,7 +209,7 @@ data "aws_iam_policy_document" "cartographer-external-ephemeris-etl-lambda" {
       "s3:PutObject",
       "s3:GetObject"
     ]
-    resources = ["arn:aws:s3:::heo-cartographer-00/*"]
+    resources = ["arn:aws:s3:::--00/*"]
   }
   statement {
     effect = "Allow"
@@ -220,7 +220,7 @@ data "aws_iam_policy_document" "cartographer-external-ephemeris-etl-lambda" {
   }
 }
 
-data "aws_iam_policy_document" "cartographer-external-ephemeris-etl-lambda-assume-role-policy" {
+data "aws_iam_policy_document" "-external-ephemeris-etl-lambda-assume-role-policy" {
   statement {
     actions = [
       "sts:AssumeRole"
