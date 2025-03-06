@@ -1,10 +1,10 @@
 ## ECS Service variables
 variable "ecs_name" {
-  default = "cartographer"
+  default = ""
 }
 
 variable "container_name" {
-  default = "cartographer-prod"
+  default = "-prod"
 }
 variable "container_port" {
   default = "80"
@@ -14,17 +14,17 @@ variable "host_port" {
   default = "4305"
 }
 variable "ecr_image" {
-  default = "048955030943.dkr.ecr.ap-southeast-2.amazonaws.com/cartographer_r"
+  default = "account_id.dkr.ecr.ap-southeast-2.amazonaws.com/_r"
 }
 
 variable "postgres_name" {
-  default     = "postgres"
+  default     = ""
   type        = string
-  description = "Cartographer postgres database container"
+  description = " database container"
 }
 
 variable "postgres_port" {
-  default = "5432"
+  default = ""
 }
 
 ## Tags
@@ -32,7 +32,7 @@ variable "resource_tags" {
   description = "Tags to set for all resources"
   type        = map(string)
   default = {
-    "heo:env:service" = "prod:Cartographer",
+    "heo:env:service" = "prod:",
     "creator"         = "terraform"
   }
 }
@@ -45,27 +45,23 @@ variable "sns_endpoint" {
 
 variable "sns_topic_name" {
   description = "Name of SNS Topic"
-  default     = "HEO-prod-Infrastructure"
-}
-
-variable "service_discovery" {
-  default = "heo-inspect-cluster"
+  default     = "-Infrastructure"
 }
 
 variable "instance_type" {
   type    = string
-  default = "c7i.xlarge"
+  default = ""
 }
 
 variable "health_monitor_lambda" {
   description = "Health Monitor Lambda"
-  default     = "cartographer-health-monitoring-lambda"
+  default     = ""
   type        = string
 }
 
 variable "health_monitor_lambda_uri" {
   description = "location of lambda image"
-  default     = "dkr.ecr.ap-southeast-2.amazonaws.com/cartographer_health_monitoring_lambda_r:latest"
+  default     = "dkr.ecr.ap-southeast-2.amazonaws.com/_:latest"
   type        = string
 }
 
@@ -77,7 +73,7 @@ variable "environment" {
 }
 
 variable "schedule_lambda" {
-  default     = "arn:aws:lambda:ap-southeast-2:048955030943:function:cartographer-spacetrack-etl-lambda"
+  default     = "arn:aws:lambda:ap-southeast-2::function:--etl-lambda"
   type        = string
   description = "lambda target for the eventbridge targets"
 }
@@ -106,7 +102,7 @@ variable "health_monitors" {
     "general-errors" = {
       name = "General-Errors"
       alarm_actions = [
-        "arn:aws:lambda:ap-southeast-2:048955030943:function:cartographer-general-errors-custom-notification"
+        "arn:aws:lambda:ap-southeast-2::function:-general-errors-custom-notification"
       ]
     },
     "omm health check failed" = {
@@ -153,8 +149,8 @@ variable "health_monitor_objects" {
 }
 
 
-variable "cartographer-okapi-etl-lambda" {
-  default = "cartographer-okapi-etl-lambda"
+variable "--etl-lambda" {
+  default = "--etl-lambda"
 }
 
 variable "cw_metric_filter_pattern" {
